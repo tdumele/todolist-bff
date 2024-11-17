@@ -1,0 +1,28 @@
+package com.todolist.bff_todolist.domain.service.impl;
+
+import com.todolist.bff_todolist.domain.model.Todolist;
+import com.todolist.bff_todolist.domain.service.TodolistService;
+import com.todolist.bff_todolist.spi.repository.TodolistRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class TodolistServiceDefaultImpl implements TodolistService {
+
+    private final TodolistRepository todolistRepository;
+
+    @Override
+    public List<Todolist> getAllTodolists() {
+        return todolistRepository.getAllTodolists();
+    }
+
+    @Override
+    public Optional<Todolist> getTodolistById(UUID id) {
+        return todolistRepository.getTodolistById(id);
+    }
+}
