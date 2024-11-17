@@ -1,18 +1,9 @@
 package com.todolist.bff_todolist.api.vo;
 
-
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.UUID;
 
-
-@Getter
-@Setter
-public class GetTodolistResponse {
-
-    private UUID id;
-    private String title;
-    private String description;
-    private String status;
-}
+public record GetTodolistResponse(UUID id,
+                                   String title,
+                                   String description,
+                                   String status
+){}
