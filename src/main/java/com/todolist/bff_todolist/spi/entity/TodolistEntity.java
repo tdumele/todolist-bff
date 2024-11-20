@@ -14,15 +14,19 @@ public class TodolistEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ID")
+    @Column(name = "TODOLIST_ID")
     private UUID id;
 
-    @Column(name = "TITLE")
+    @Column(name = "TODOLIST_TITLE")
     private String title;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "TODOLIST_DESCRIPTION")
     private String description;
 
-    @Column(name = "STATUS")
-    private String status;
+    @Column(name = "TODOLIST_CHECKED")
+    private Boolean checked;
+
+    @ManyToOne
+    @JoinColumn(name = "TODOLIST_CATEGORY_ID")
+    private CategoryEntity category;
 }

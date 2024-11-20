@@ -1,8 +1,9 @@
-package com.todolist.bff_todolist.spi.repository;
+package com.todolist.bff_todolist.spi.repository.impl;
 
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.spi.dao.TodolistDAO;
 import com.todolist.bff_todolist.spi.mapper.TodolistSpiMapper;
+import com.todolist.bff_todolist.spi.repository.TodolistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

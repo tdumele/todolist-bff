@@ -5,5 +5,6 @@ import java.util.UUID;
 public record GetTodolistResponse(UUID id,
                                    String title,
                                    String description,
-                                   String status
+                                   Boolean checked,
+                                   GetTodolistCategoryResponse category
 ){}

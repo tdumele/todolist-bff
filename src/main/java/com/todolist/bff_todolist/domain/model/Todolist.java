@@ -11,5 +11,6 @@ public class Todolist {
     private UUID id;
     private String title;
     private String description;
-    private STATUS status;
+    private boolean checked;
+    private Category category;
 }
