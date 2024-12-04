@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -29,4 +30,7 @@ public class TodolistEntity {
     @ManyToOne
     @JoinColumn(name = "TODOLIST_CATEGORY_ID")
     private CategoryEntity category;
+
+    @Column(name = "TODOLIST_DUE_DATE")
+    private LocalDateTime dueDate;
 }
