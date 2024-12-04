@@ -40,7 +40,7 @@ class TodolistRepositoryTest {
         Optional<Todolist> actualTodolist = todolistRepository.getTodolistById(id);
 
         assertTrue(actualTodolist.isPresent());
-        assertEquals("Learn Spring Boot", actualTodolist.get().getTitle());
+        assertEquals("Personal", actualTodolist.get().getTitle());
     }
 
     @Test

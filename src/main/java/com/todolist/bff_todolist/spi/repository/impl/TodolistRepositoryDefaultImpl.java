@@ -1,6 +1,8 @@
 package com.todolist.bff_todolist.spi.repository.impl;
 
+import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
+import com.todolist.bff_todolist.spi.dao.TaskDAO;
 import com.todolist.bff_todolist.spi.dao.TodolistDAO;
 import com.todolist.bff_todolist.spi.mapper.TodolistSpiMapper;
 import com.todolist.bff_todolist.spi.repository.TodolistRepository;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TodolistRepositoryDefaultImpl implements TodolistRepository {
 
+    private final TaskDAO taskDAO;
     private final TodolistDAO todolistDAO;
     private final TodolistSpiMapper mapper;
 
@@ -28,5 +31,11 @@ public class TodolistRepositoryDefaultImpl implements TodolistRepository {
     public Optional<Todolist> getTodolistById(UUID id) {
         var entity = todolistDAO.findById(id);
         return entity.map(mapper::mapTo);
+    }
+
+    @Override
+    public List<Task> getTasksFromTodolist(UUID id) {
+        var entities = taskDAO.findAllByTodolist_Id(id);
+        return entities.stream().map(mapper::mapTo).toList();
     }
 }

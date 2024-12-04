@@ -1,6 +1,6 @@
 package com.todolist.bff_todolist.api.controller;
 
-import com.todolist.bff_todolist.api.mapper.TodolistMapperImpl;
+import com.todolist.bff_todolist.api.mapper.TaskMapperImpl;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({TodolistMapperImpl.class})
+@Import({TaskMapperImpl.class})
 @WebMvcTest(TodolistController.class)
 class TodolistControllerTest {
 
@@ -37,7 +37,6 @@ class TodolistControllerTest {
         todolist.setId(uuid);
         todolist.setTitle("title");
         todolist.setDescription("description");
-        todolist.setChecked(false);
 
         when(service.getAllTodolists()).thenReturn(List.of(todolist));
 
@@ -46,8 +45,7 @@ class TodolistControllerTest {
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(uuid.toString()))
                 .andExpect(jsonPath("$[0].title").value("title"))
-                .andExpect(jsonPath("$[0].description").value("description"))
-                .andExpect(jsonPath("$[0].checked").value(false));
+                .andExpect(jsonPath("$[0].description").value("description"));
     }
 
     @Test
@@ -57,7 +55,6 @@ class TodolistControllerTest {
         todolist.setId(uuid);
         todolist.setTitle("title");
         todolist.setDescription("description");
-        todolist.setChecked(false);
 
         when(service.getTodolistById(uuid)).thenReturn(Optional.of(todolist));
 
@@ -65,8 +62,7 @@ class TodolistControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(uuid.toString()))
                 .andExpect(jsonPath("$.title").value("title"))
-                .andExpect(jsonPath("$.description").value("description"))
-                .andExpect(jsonPath("$.checked").value(false));
+                .andExpect(jsonPath("$.description").value("description"));
     }
 
     @Test

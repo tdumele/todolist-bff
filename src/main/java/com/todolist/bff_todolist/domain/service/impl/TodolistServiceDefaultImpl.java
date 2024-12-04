@@ -1,5 +1,6 @@
 package com.todolist.bff_todolist.domain.service.impl;
 
+import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import com.todolist.bff_todolist.spi.repository.TodolistRepository;
@@ -24,5 +25,10 @@ public class TodolistServiceDefaultImpl implements TodolistService {
     @Override
     public Optional<Todolist> getTodolistById(UUID id) {
         return todolistRepository.getTodolistById(id);
+    }
+
+    @Override
+    public List<Task> getTasksFromTodolist(UUID id) {
+        return todolistRepository.getTasksFromTodolist(id);
     }
 }

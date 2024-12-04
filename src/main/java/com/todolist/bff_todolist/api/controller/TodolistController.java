@@ -1,7 +1,8 @@
 package com.todolist.bff_todolist.api.controller;
 
-import com.todolist.bff_todolist.api.mapper.TodolistMapper;
+import com.todolist.bff_todolist.api.mapper.TaskMapper;
 import com.todolist.bff_todolist.api.vo.GetTodolistResponse;
+import com.todolist.bff_todolist.api.vo.GetTodolistTaskResponse;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +28,7 @@ import java.util.UUID;
 public class TodolistController {
 
     private final TodolistService todolistService;
-    private final TodolistMapper mapper;
+    private final TaskMapper mapper;
 
     // Careful this endpoint can retrieve a lot of data, hide it in production
     @GetMapping@Operation(summary = "Get all todolists", description = "Retrieve a list of all todolists - Warning this can retrieve a lot of data")
@@ -54,5 +55,20 @@ public class TodolistController {
         var todolist = todolistService.getTodolistById(id);
         var todolistMapped = todolist.map(mapper::mapTo);
         return ResponseEntity.of(todolistMapped);
+    }
+
+    @GetMapping("/{id}/tasks")
+    @Operation(summary = "Get tasks from todolist", description = "Retrieve a list of tasks from a specific todolist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of tasks",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = GetTodolistTaskResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Todolist not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<GetTodolistTaskResponse>> getTasksFromTodolist(@PathVariable("id") UUID id) {
+        var tasks = todolistService.getTasksFromTodolist(id);
+        var tasksMapped = tasks.stream().map(mapper::mapTo).toList();
+        return ResponseEntity.ok(tasksMapped);
     }
 }

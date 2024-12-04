@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -24,13 +23,4 @@ public class TodolistEntity {
     @Column(name = "TODOLIST_DESCRIPTION")
     private String description;
 
-    @Column(name = "TODOLIST_CHECKED")
-    private Boolean checked;
-
-    @ManyToOne
-    @JoinColumn(name = "TODOLIST_CATEGORY_ID")
-    private CategoryEntity category;
-
-    @Column(name = "TODOLIST_DUE_DATE")
-    private LocalDateTime dueDate;
 }

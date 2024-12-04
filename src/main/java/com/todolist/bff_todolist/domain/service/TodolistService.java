@@ -1,5 +1,6 @@
 package com.todolist.bff_todolist.domain.service;
 
+import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface TodolistService {
     List<Todolist> getAllTodolists();
 
     Optional<Todolist> getTodolistById(UUID id);
+
+    List<Task> getTasksFromTodolist(UUID id);
 }
