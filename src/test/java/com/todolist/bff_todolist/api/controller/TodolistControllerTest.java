@@ -1,6 +1,7 @@
 package com.todolist.bff_todolist.api.controller;
 
 import com.todolist.bff_todolist.api.mapper.TaskMapperImpl;
+import com.todolist.bff_todolist.config.TestsConfiguration;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({TaskMapperImpl.class})
+@Import({TaskMapperImpl.class, TestsConfiguration.class})
 @WebMvcTest(TodolistController.class)
 class TodolistControllerTest {
 
