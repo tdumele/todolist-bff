@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.domain.model.users;
+package com.todolist.bff_todolist.domain.model.user;
 
 import lombok.Getter;
 import lombok.Setter;
