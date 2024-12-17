@@ -1,8 +1,8 @@
-package com.todolist.bff_todolist.spi.repository;
+package com.todolist.bff_todolist.spi.repository.impl;
 
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.spi.mapper.TodolistSpiMapperImpl;
-import com.todolist.bff_todolist.spi.repository.impl.TodolistRepositoryDefaultImpl;
+import com.todolist.bff_todolist.spi.repository.TodolistRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import({
         TodolistRepositoryDefaultImpl.class, TodolistSpiMapperImpl.class
 })
-class TodolistRepositoryTest {
+class TodolistRepositoryDefaultImplTest {
 
     @Autowired
     TodolistRepository todolistRepository;
@@ -32,6 +32,7 @@ class TodolistRepositoryTest {
 
         assertEquals(3, actualTodolists.size());
     }
+
 
     @Test
     void getTodolistByIdReturnsTodolistWhenIdExists() {

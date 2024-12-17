@@ -1,8 +1,8 @@
 package com.todolist.bff_todolist.api.controller;
 
 import com.todolist.bff_todolist.api.mapper.TaskMapper;
-import com.todolist.bff_todolist.api.vo.GetTodolistResponse;
-import com.todolist.bff_todolist.api.vo.GetTodolistTaskResponse;
+import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
+import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
