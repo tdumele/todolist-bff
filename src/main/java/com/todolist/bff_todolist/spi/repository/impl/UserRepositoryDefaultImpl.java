@@ -22,4 +22,12 @@ public class UserRepositoryDefaultImpl implements UserRepository {
         var entity = userDAO.findById(uuid);
         return entity.map(userMapper::mapTo);
     }
+
+    @Override
+    public User createUser(User user) {
+        var entity = userMapper.mapTo(user);
+        entity.setId(UUID.randomUUID());
+        userDAO.save(entity);
+        return userMapper.mapTo(entity);
+    }
 }

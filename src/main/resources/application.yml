@@ -11,6 +11,12 @@ spring:
         ddl-auto: create-drop
     defer-datasource-initialization: true
 
-h2:
-  console:
-    enabled: true
+  h2:
+    console:
+      enabled: true
+
+application:
+  security:
+    password-encoder:
+      strength: 10
+      secret: SuperSecretKey

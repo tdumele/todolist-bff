@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private boolean accountNonLocked;
     private Instant credentialsDueTime;
     private boolean enabled;
-    private List<Role> roles;
+    private Set<Role> roles;
     private String email;
 
     @Override

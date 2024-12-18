@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface UserRepository {
 
     Optional<User> getUserById(UUID uuid);
+    User createUser(User user);
 }
