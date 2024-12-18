@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.UUID;
 
 
-// FIXME externalize the origin in a configuration file
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/todolists")

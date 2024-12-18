@@ -16,6 +16,7 @@ spring:
       enabled: true
 
 application:
+  front-url: http://localhost:3000
   security:
     password-encoder:
       strength: 10

@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     private final Security security = new Security();
+    private final String frontUrl = "http://localhost:3000";
 
     @Getter
     @Setter
