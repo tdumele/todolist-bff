@@ -30,4 +30,9 @@ public class UserRepositoryDefaultImpl implements UserRepository {
         userDAO.save(entity);
         return userMapper.mapTo(entity);
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userDAO.findByUsername(username).map(userMapper::mapTo);
+    }
 }
