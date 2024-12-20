@@ -15,13 +15,22 @@ public class ApplicationProperties {
     @Getter
     @Setter
     public static class Security {
+
         private final PasswordEncoder passwordEncoder = new PasswordEncoder();
+        private final Jwt jwt = new Jwt();
 
         @Getter
         @Setter
         public static class PasswordEncoder {
             private int strength;
             private String secret;
+        }
+
+        @Getter
+        @Setter
+        public static class Jwt {
+            private String secret;
+            private long expiration;
         }
     }
 }

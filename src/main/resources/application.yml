@@ -1,23 +1,28 @@
 spring:
   application:
     name: bff-todolist
+
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://localhost:5432/todolists_db
+    username: postgres
+    password: password # very secure password
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
-        ddl-auto: create-drop
+      show-sql: true
     defer-datasource-initialization: true
 
-  h2:
-    console:
-      enabled: true
+  sql:
+    init:
+      mode: always
 
 application:
   front-url: http://localhost:3000
   security:
+    jwt:
+      secret: 71ee6b547943c9fd51c6d0ec14d8effc079832aac7fe657637e855a0db1359c4
+      expiration: 86400000
     password-encoder:
       strength: 10
       secret: SuperSecretKey
