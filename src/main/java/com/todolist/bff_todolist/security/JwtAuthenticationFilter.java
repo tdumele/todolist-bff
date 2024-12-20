@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.config.security;
+package com.todolist.bff_todolist.security;
 
 import com.todolist.bff_todolist.spi.repository.UserRepository;
 import jakarta.servlet.FilterChain;

@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.api.vo.user;
+package com.todolist.bff_todolist.security.controller.dto;
 
 import com.todolist.bff_todolist.domain.model.user.Role;
 

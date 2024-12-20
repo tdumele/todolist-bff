@@ -4,6 +4,11 @@ import com.todolist.bff_todolist.api.mapper.TaskMapperImpl;
 import com.todolist.bff_todolist.config.TestsConfiguration;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.service.TodolistService;
+import com.todolist.bff_todolist.security.JwtService;
+import com.todolist.bff_todolist.spi.dao.UserDAO;
+import com.todolist.bff_todolist.spi.mapper.UserSpiMapperImpl;
+import com.todolist.bff_todolist.spi.repository.UserRepository;
+import com.todolist.bff_todolist.spi.repository.impl.UserRepositoryDefaultImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({TaskMapperImpl.class, TestsConfiguration.class})
+@Import({TaskMapperImpl.class, TestsConfiguration.class, JwtService.class, UserRepositoryDefaultImpl.class, UserSpiMapperImpl.class})
 @WebMvcTest(TodolistController.class)
 class TodolistControllerTest {
 
@@ -30,6 +35,9 @@ class TodolistControllerTest {
 
     @MockBean
     TodolistService service;
+
+    @MockBean
+    UserDAO userDAO;
 
     @Test
     void getAllTodolistsReturnsListOfTodolists() throws Exception {
