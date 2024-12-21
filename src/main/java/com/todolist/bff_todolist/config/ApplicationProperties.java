@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
@@ -18,6 +23,8 @@ public class ApplicationProperties {
 
         private final PasswordEncoder passwordEncoder = new PasswordEncoder();
         private final Jwt jwt = new Jwt();
+        private String[] allowedOrigins;
+        private String[] permittedUrls;
 
         @Getter
         @Setter

@@ -35,10 +35,10 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> disable())
+        http.csrf().disable()
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/auth/**").permitAll();
-                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers(applicationProperties.getSecurity().getPermittedUrls()).permitAll();
+                    authorize.anyRequest().permitAll();
                 })
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -52,7 +52,8 @@ public class SecurityConfiguration {
 
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins(applicationProperties.getFrontUrl());
+//                registry.addMapping("/**").allowedOrigins(applicationProperties.getSecurity().getAllowedOrigins());
+                registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
     }
