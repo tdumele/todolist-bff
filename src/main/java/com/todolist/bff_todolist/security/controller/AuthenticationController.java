@@ -9,7 +9,6 @@ import com.todolist.bff_todolist.security.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,22 +18,11 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
-
-    @GetMapping("/hello")
-    public String ghello() {
-        return "Hello";
-    }
-
-
-    @PostMapping("/hello")
-    public String hello() {
-        return "Hello";
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid SignupRequest signupRequest) {
@@ -48,7 +36,5 @@ public class AuthenticationController {
         var loginResponse = new LoginResponse(jwtService.generateToken(user), jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
     }
-
-
 
 }

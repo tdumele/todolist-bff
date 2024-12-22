@@ -7,7 +7,6 @@ import com.todolist.bff_todolist.domain.service.TodolistService;
 import com.todolist.bff_todolist.security.JwtService;
 import com.todolist.bff_todolist.spi.dao.UserDAO;
 import com.todolist.bff_todolist.spi.mapper.UserSpiMapperImpl;
-import com.todolist.bff_todolist.spi.repository.UserRepository;
 import com.todolist.bff_todolist.spi.repository.impl.UserRepositoryDefaultImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

@@ -21,8 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.SecureRandom;
 
-import static org.apache.catalina.webresources.TomcatURLStreamHandlerFactory.disable;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -38,7 +36,7 @@ public class SecurityConfiguration {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers(applicationProperties.getSecurity().getPermittedUrls()).permitAll();
-                    authorize.anyRequest().permitAll();
+                    authorize.anyRequest().authenticated();
                 })
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -52,8 +50,7 @@ public class SecurityConfiguration {
 
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-//                registry.addMapping("/**").allowedOrigins(applicationProperties.getSecurity().getAllowedOrigins());
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE");
+                registry.addMapping("/**").allowedOrigins(applicationProperties.getSecurity().getAllowedOrigins());
             }
         };
     }

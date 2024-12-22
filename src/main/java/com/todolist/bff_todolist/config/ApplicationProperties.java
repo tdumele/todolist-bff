@@ -4,18 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
     private final Security security = new Security();
-    private final String frontUrl = "http://localhost:3000";
+    private String frontUrl;
 
     @Getter
     @Setter
