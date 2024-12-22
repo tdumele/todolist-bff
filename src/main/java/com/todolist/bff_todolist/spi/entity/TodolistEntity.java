@@ -1,5 +1,6 @@
 package com.todolist.bff_todolist.spi.entity;
 
+import com.todolist.bff_todolist.spi.entity.user.UserAccountEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,9 @@ public class TodolistEntity {
 
     @Column(name = "TODOLIST_DESCRIPTION")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private UserAccountEntity userId;
 
 }

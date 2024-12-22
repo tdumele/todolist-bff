@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.config.security;
+package com.todolist.bff_todolist.security;
 
 import com.todolist.bff_todolist.spi.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,29 +27,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull  FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
 
-        if (StringUtils.startsWith("Bearer", authHeader)) {
-            filterChain.doFilter(request, response);
-        }
+        if (StringUtils.startsWith(authHeader, "Bearer ")) {
+            final String jwt = authHeader.substring(7);
+            final String username = jwtService.extractUsername(jwt);
 
-        final String jwt = authHeader.substring(7);
-        final String username = jwtService.extractUsername(jwt);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null && StringUtils.isNotBlank(username)) {
+                UserDetails userDetails = userRepository.findByUsername(username).orElseThrow(() -> new BadCredentialsException("User not found"));
 
-        if (auth == null && StringUtils.isNotBlank(username)) {
-            UserDetails userDetails = userRepository.findByUsername(username).orElseThrow(() -> new BadCredentialsException("User not found"));
-
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
         }
 
         filterChain.doFilter(request, response);
-
     }
 }

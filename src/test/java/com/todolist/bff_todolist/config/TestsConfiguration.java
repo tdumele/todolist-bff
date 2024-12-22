@@ -16,9 +16,7 @@ public class TestsConfiguration {
 
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("api/v1/**").permitAll();
-
-                    authorize.anyRequest().authenticated();
+                    authorize.anyRequest().permitAll();
                 }).httpBasic(Customizer.withDefaults());
         return http.build();
     }

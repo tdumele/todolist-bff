@@ -20,9 +20,18 @@ spring:
 application:
   front-url: http://localhost:3000
   security:
+    permitted-urls:
+      - /auth/**
+      - /swagger-ui/**
+    allowed-origins:
+      - "*"
     jwt:
       secret: 71ee6b547943c9fd51c6d0ec14d8effc079832aac7fe657637e855a0db1359c4
       expiration: 86400000
     password-encoder:
       strength: 10
       secret: SuperSecretKey
+
+logging:
+  level:
+    org.springframework.web: DEBUG

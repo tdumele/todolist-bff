@@ -30,41 +30,41 @@ public class UserAccountEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "ID")
+    @Column(name = "USER_ID")
     private UUID id;
 
-    @Column(nullable = false, unique = true, name = "USERNAME")
+    @Column(nullable = false, unique = true, name = "USER_USERNAME")
     private String username;
 
-    @Column(nullable = false, name = "PASSWORD")
+    @Column(nullable = false, name = "USER_PASSWORD")
     private String password;
 
-    @Column(name = "ACCOUNT_DUE_TIME")
+    @Column(name = "USER_ACCOUNT_DUE_TIME")
     private Instant accountDueTime;
 
-    @Column(name = "ACCOUNT_NON_LOCKED")
+    @Column(name = "USER_ACCOUNT_NON_LOCKED")
     private boolean accountNonLocked;
 
-    @Column(name = "CREDENTIALS_DUE_TIME")
+    @Column(name = "USER_CREDENTIALS_DUE_TIME")
     private Instant credentialsDueTime;
 
-    @Column(nullable = false, name = "ENABLED")
+    @Column(nullable = false, name = "USER_ENABLED")
     private boolean enabled;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
-    @Column(name = "ROLE")
+    @Column(name = "USER_ROLE")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "USER_EMAIL")
     private String email;
 
     @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
+    @Column(updatable = false, name = "USER_CREATED_AT")
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "USER_UPDATED_AT")
     private Instant updatedAt;
 }

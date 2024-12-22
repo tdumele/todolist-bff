@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.config.security;
+package com.todolist.bff_todolist.security;
 
 import com.todolist.bff_todolist.config.ApplicationProperties;
 import io.jsonwebtoken.Claims;
@@ -71,5 +71,9 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public long getExpirationTime() {
+        return applicationProperties.getSecurity().getJwt().getExpiration();
     }
 }

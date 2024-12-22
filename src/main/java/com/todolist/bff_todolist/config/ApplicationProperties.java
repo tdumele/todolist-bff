@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     private final Security security = new Security();
-    private final String frontUrl = "http://localhost:3000";
+    private String frontUrl;
 
     @Getter
     @Setter
@@ -18,6 +18,8 @@ public class ApplicationProperties {
 
         private final PasswordEncoder passwordEncoder = new PasswordEncoder();
         private final Jwt jwt = new Jwt();
+        private String[] allowedOrigins;
+        private String[] permittedUrls;
 
         @Getter
         @Setter
