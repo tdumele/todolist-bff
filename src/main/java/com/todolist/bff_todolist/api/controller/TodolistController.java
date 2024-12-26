@@ -1,6 +1,7 @@
 package com.todolist.bff_todolist.api.controller;
 
 import com.todolist.bff_todolist.api.mapper.TaskMapper;
+import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequest;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
 import com.todolist.bff_todolist.domain.model.user.User;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +36,7 @@ public class TodolistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = GetTodolistResponse.class))),
+                            schema = @Schema(implementation = GetTodolistResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<GetTodolistResponse>> getAllTodolists(Authentication authentication) {
@@ -49,7 +51,7 @@ public class TodolistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved todolist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = GetTodolistResponse.class))),
+                            schema = @Schema(implementation = GetTodolistResponse.class))),
             @ApiResponse(responseCode = "404", description = "Todolist not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -64,7 +66,7 @@ public class TodolistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list of tasks",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = GetTodolistTaskResponse.class))),
+                            schema = @Schema(implementation = GetTodolistTaskResponse.class))),
             @ApiResponse(responseCode = "404", description = "Todolist not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
@@ -72,5 +74,19 @@ public class TodolistController {
         var tasks = todolistService.getTasksFromTodolist(id);
         var tasksMapped = tasks.stream().map(mapper::mapTo).toList();
         return ResponseEntity.ok(tasksMapped);
+    }
+
+    @PostMapping("/{id}/tasks")
+    @Operation(summary = "Create a task in a todolist", description = "Create a task in a specific todolist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task created",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetTodolistTaskResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<GetTodolistTaskResponse> createTaskInTodolist(@PathVariable("id") UUID id, @RequestBody CreateTaskRequest request) {
+        var task = todolistService.createTaskInTodolist(id, request);
+        return ResponseEntity.created(URI.create("/api/v1/todolists/" + id + "/tasks/" + task.getId())).build();
     }
 }

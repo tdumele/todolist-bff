@@ -12,4 +12,6 @@ public interface TodolistSpiMapper {
     Todolist mapTo(TodolistEntity entity);
 
     Task mapTo(TaskEntity entity);
+
+    TaskEntity mapTo(Task task);
 }

@@ -45,5 +45,12 @@ public class TodolistRepositoryDefaultImpl implements TodolistRepository {
         return entities.stream().map(mapper::mapTo).toList();
     }
 
+    @Override
+    public Task createTask(Task task) {
+        var entity = mapper.mapTo(task);
+        var savedEntity = taskDAO.save(entity);
+        return mapper.mapTo(savedEntity);
+    }
+
 
 }

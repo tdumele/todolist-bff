@@ -16,4 +16,6 @@ public interface TodolistRepository {
     List<Task> getTasksFromTodolist(UUID id);
 
     List<Todolist> getAllTodolistsByUserId(UUID id);
+
+    Task createTask(Task task);
 }
