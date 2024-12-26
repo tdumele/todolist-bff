@@ -3,6 +3,7 @@ package com.todolist.bff_todolist.api.controller;
 import com.todolist.bff_todolist.api.mapper.TaskMapper;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
+import com.todolist.bff_todolist.domain.model.user.User;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,14 +29,17 @@ public class TodolistController {
     private final TodolistService todolistService;
     private final TaskMapper mapper;
 
-    // Careful this endpoint can retrieve a lot of data, hide it in production
-    @GetMapping@Operation(summary = "Get all todolists", description = "Retrieve a list of all todolists - Warning this can retrieve a lot of data")
+    @GetMapping
+    @Operation(summary = "Get all todolists", description = "Retrieve a list of all todolists")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = GetTodolistResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<List<GetTodolistResponse>> getAllTodolists() {
-        var todolists = todolistService.getAllTodolists();
+    public ResponseEntity<List<GetTodolistResponse>> getAllTodolists(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        var todolists = todolistService.getAllTodolistsByUser(user);
         var todolistsMapped = todolists.stream().map(mapper::mapTo).toList();
         return ResponseEntity.ok(todolistsMapped);
     }

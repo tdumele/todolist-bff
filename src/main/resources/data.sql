@@ -22,7 +22,7 @@ INSERT INTO TODOLIST(TODOLIST_ID, TODOLIST_TITLE, TODOLIST_DESCRIPTION, USER_ID)
 VALUES
   ('a4e310d3-a741-4751-ab54-f378a72e9870', 'Personal', 'Todo list focused on personal tasks', '14e310d3-a741-4751-ab54-f378a72e9871'),
   ('d6ceaf6e-26d8-4567-90c5-5beea23bbb02', 'Work', 'Todolist focused on work tasks', '14e310d3-a741-4751-ab54-f378a72e9871'),
-  ('5deb81bd-8b0b-40f1-9908-d8fef8ed2264', 'Sport', 'Todolist focused on sport tasks (running, swimming, etc.)', '14e310d3-a741-4751-ab54-f378a72e9871');
+  ('5deb81bd-8b0b-40f1-9908-d8fef8ed2264', 'Sport', 'Todolist focused on sport tasks (running, swimming, etc.)', '24e310d3-a741-4751-ab54-f378a72e9872');
 
 -- Insert tasks
 INSERT INTO TASK(TASK_ID, TASK_TITLE, TASK_DESCRIPTION, TASK_CHECKED, TASK_DUE_DATE, TODOLIST_ID) VALUES ('a4e310d3-a741-4751-ab54-f378a72e9870', 'Learn Spring Boot', 'Learn Spring Boot', 'false', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870');

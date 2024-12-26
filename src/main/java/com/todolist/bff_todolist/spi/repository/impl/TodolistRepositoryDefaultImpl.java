@@ -38,4 +38,12 @@ public class TodolistRepositoryDefaultImpl implements TodolistRepository {
         var entities = taskDAO.findAllByTodolist_Id(id);
         return entities.stream().map(mapper::mapTo).toList();
     }
+
+    @Override
+    public List<Todolist> getAllTodolistsByUserId(UUID id) {
+        var entities = todolistDAO.findAllByUser_Id(id);
+        return entities.stream().map(mapper::mapTo).toList();
+    }
+
+
 }

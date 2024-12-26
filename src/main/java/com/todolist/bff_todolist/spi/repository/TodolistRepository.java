@@ -14,4 +14,6 @@ public interface TodolistRepository {
     Optional<Todolist> getTodolistById(UUID id);
 
     List<Task> getTasksFromTodolist(UUID id);
+
+    List<Todolist> getAllTodolistsByUserId(UUID id);
 }

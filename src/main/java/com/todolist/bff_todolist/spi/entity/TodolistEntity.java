@@ -26,6 +26,6 @@ public class TodolistEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
-    private UserAccountEntity userId;
+    private UserAccountEntity user;
 
 }

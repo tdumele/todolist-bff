@@ -2,6 +2,7 @@ package com.todolist.bff_todolist.domain.service.impl;
 
 import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
+import com.todolist.bff_todolist.domain.model.user.User;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import com.todolist.bff_todolist.spi.repository.TodolistRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,10 @@ public class TodolistServiceDefaultImpl implements TodolistService {
     @Override
     public List<Task> getTasksFromTodolist(UUID id) {
         return todolistRepository.getTasksFromTodolist(id);
+    }
+
+    @Override
+    public List<Todolist> getAllTodolistsByUser(User user) {
+        return todolistRepository.getAllTodolistsByUserId(user.getId());
     }
 }
