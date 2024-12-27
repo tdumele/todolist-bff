@@ -25,8 +25,13 @@ VALUES
   ('5deb81bd-8b0b-40f1-9908-d8fef8ed2264', 'Sport', 'Todolist focused on sport tasks (running, swimming, etc.)', '24e310d3-a741-4751-ab54-f378a72e9872');
 
 -- Insert tasks
-INSERT INTO TASK(TASK_ID, TASK_TITLE, TASK_DESCRIPTION, TASK_CHECKED, TASK_DUE_DATE, TODOLIST_ID) VALUES ('a4e310d3-a741-4751-ab54-f378a72e9870', 'Learn Spring Boot', 'Learn Spring Boot', 'false', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870');
+INSERT INTO TASK(TASK_ID, TASK_TITLE, TASK_DESCRIPTION, TASK_CHECKED, TASK_DUE_DATE, TODOLIST_ID) VALUES
+('a4e310d3-a741-4751-ab54-f378a72e9870', 'Learn Spring Boot', 'Learn Spring Boot', 'false', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870'),
+('d6ceaf6e-26d8-4567-90c5-5beea2dbbb02', 'Learn Spring Security', 'Learn Spring Security', 'true', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870'),
+('5deb81bd-8b0b-40f1-9908-d8fe78ed2264', 'Learn Spring Data JPA', 'Learn Spring Data JPA', 'true', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870'),
+('a4e310d3-a741-4751-ab54-f378872e7870', 'Learn React', 'Learn React to dev web apps', 'true', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870'),
+('a4e310d3-a741-4751-ab54-f378372e7870', 'Learn React Native', 'Learn React Native to dev mobile apps', 'true', '2021-12-31T23:59:59', 'a4e310d3-a741-4751-ab54-f378a72e9870');
 INSERT INTO TASK(TASK_ID, TASK_TITLE, TASK_DESCRIPTION, TASK_CHECKED, TODOLIST_ID)
 VALUES
   ('d6ceaf6e-26d8-4567-90c5-5beea23bbb02', 'Learn Spring MVC', 'Learn Spring MVC', 'false', 'a4e310d3-a741-4751-ab54-f378a72e9870'),
-  ('5deb81bd-8b0b-40f1-9908-d8fef8ed2264', 'Learn Spring Data JPA', 'Learn Spring Data JPA', 'false', 'd6ceaf6e-26d8-4567-90c5-5beea23bbb02');
+  ('5deb81bd-8b0b-40f1-9908-d8fef8ed2264', 'Learn Spring Data JPA', 'Learn Spring Data JPA', 'true', 'd6ceaf6e-26d8-4567-90c5-5beea23bbb02');

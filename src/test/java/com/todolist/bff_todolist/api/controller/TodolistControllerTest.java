@@ -43,11 +43,7 @@ class TodolistControllerTest {
     @Test
     void getAllTodolistsReturnsListOfTodolists() throws Exception {
         UUID uuid = UUID.randomUUID();
-        var todolist = new Todolist();
-        todolist.setId(uuid);
-        todolist.setTitle("title");
-        todolist.setDescription("description");
-
+        var todolist = new Todolist(uuid, "title", "description", null);
         when(service.getAllTodolists()).thenReturn(List.of(todolist));
 
         mockMvc.perform(get("/api/v1/todolists"))
@@ -61,10 +57,7 @@ class TodolistControllerTest {
     @Test
     void getTodolistByIdReturnsTodolistWhenIdExists() throws Exception {
         UUID uuid = UUID.randomUUID();
-        var todolist = new Todolist();
-        todolist.setId(uuid);
-        todolist.setTitle("title");
-        todolist.setDescription("description");
+        var todolist = new Todolist(uuid, "title", "description", null);
 
         when(service.getTodolistById(uuid)).thenReturn(Optional.of(todolist));
 

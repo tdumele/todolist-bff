@@ -41,7 +41,7 @@ class TodolistRepositoryDefaultImplTest {
         Optional<Todolist> actualTodolist = todolistRepository.getTodolistById(id);
 
         assertTrue(actualTodolist.isPresent());
-        assertEquals("Personal", actualTodolist.get().getTitle());
+        assertEquals("Personal", actualTodolist.get().title());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.todolist.bff_todolist.api.controller;
 
 import com.todolist.bff_todolist.api.mapper.TaskMapper;
-import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequest;
+import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequestApi;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
 import com.todolist.bff_todolist.domain.model.user.User;
@@ -85,8 +85,8 @@ public class TodolistController {
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<GetTodolistTaskResponse> createTaskInTodolist(@PathVariable("id") UUID id, @RequestBody CreateTaskRequest request) {
-        var task = todolistService.createTaskInTodolist(id, request);
-        return ResponseEntity.created(URI.create("/api/v1/todolists/" + id + "/tasks/" + task.getId())).build();
+    public ResponseEntity<GetTodolistTaskResponse> createTaskInTodolist(@PathVariable("id") UUID id, @RequestBody CreateTaskRequestApi request) {
+        var task = todolistService.createTaskInTodolist(id, mapper.mapTo(request));
+        return ResponseEntity.created(URI.create("/api/v1/todolists/" + id + "/tasks/" + task.id())).build();
     }
 }

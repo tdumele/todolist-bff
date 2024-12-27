@@ -1,6 +1,6 @@
 package com.todolist.bff_todolist.domain.service;
 
-import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequest;
+import com.todolist.bff_todolist.domain.model.CreateTaskRequest;
 import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.model.user.User;

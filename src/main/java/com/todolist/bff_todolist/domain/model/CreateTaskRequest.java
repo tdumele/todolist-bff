@@ -1,4 +1,4 @@
-package com.todolist.bff_todolist.api.vo.todolist;
+package com.todolist.bff_todolist.domain.model;
 
 import java.time.LocalDateTime;
 
