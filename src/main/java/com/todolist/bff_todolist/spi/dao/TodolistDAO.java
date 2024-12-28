@@ -1,6 +1,5 @@
 package com.todolist.bff_todolist.spi.dao;
 
-import com.todolist.bff_todolist.spi.entity.TaskEntity;
 import com.todolist.bff_todolist.spi.entity.TodolistEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

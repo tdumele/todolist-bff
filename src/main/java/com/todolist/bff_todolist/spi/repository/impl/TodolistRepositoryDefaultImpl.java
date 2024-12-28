@@ -52,5 +52,16 @@ public class TodolistRepositoryDefaultImpl implements TodolistRepository {
         return mapper.mapTo(savedEntity);
     }
 
+    @Override
+    public Optional<Task> findTaskById(UUID id) {
+        var entity = taskDAO.findById(id);
+        return entity.map(mapper::mapTo);
+    }
+
+    @Override
+    public Task updateTask(Task task) {
+        var savedEntity = taskDAO.save(mapper.mapTo(task));
+        return mapper.mapTo(savedEntity);
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.todolist.bff_todolist.domain.service.impl;
 
-import com.todolist.bff_todolist.domain.model.CreateTaskRequest;
 import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.model.user.User;
@@ -43,25 +42,36 @@ public class TodolistServiceDefaultImpl implements TodolistService {
     }
 
     @Override
-    public Task createTaskInTodolist(UUID id, CreateTaskRequest request) {
-        Todolist todolist = todolistRepository.getTodolistById(id).orElseThrow(() -> new IllegalStateException("Todolist not found"));
+    public Task createTaskInTodolist(UUID idTodolist, Task request) {
+        Todolist todolist = todolistRepository.getTodolistById(idTodolist).orElseThrow(() -> new IllegalStateException("Todolist not found"));
         checkTaskRequest(todolist, request);
         Task task = new Task(UUID.randomUUID(), request.title(), request.description(), false, request.dueDate(), todolist);
 
         return todolistRepository.createTask(task);
     }
 
-    private void checkTaskRequest(Todolist todolist, CreateTaskRequest request) {
+    @Override
+    public Task updateTaskInTodolist(UUID idTodolist, Task task) {
+        Todolist todolist = todolistRepository.getTodolistById(idTodolist).orElseThrow(() -> new IllegalStateException("Todolist not found"));
+        checkTaskRequest(todolist, task);
+        return todolistRepository.updateTask(task);
+    }
+
+    private void checkPutRequest(Todolist todolist, Task request) {
+        checkTaskRequest(todolist, request);
+        if (request.id() == null) {
+            throw new IllegalArgumentException("Task id is required");
+        }
+        todolistRepository.findTaskById(request.id()).orElseThrow(() -> new IllegalStateException("Task not found"));
+    }
+
+    private void checkTaskRequest(Todolist todolist, Task request) {
         if (StringUtils.isBlank(request.title())) {
             throw new IllegalArgumentException("Title is required");
-        }
-        if (StringUtils.isBlank(request.description()))  {
-            throw new IllegalArgumentException("Description is required");
         }
         if (request.dueDate() != null && request.dueDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Due date must be in the future");
         }
-
         if (!loggerUserOwnThis(todolist)) {
             throw new IllegalArgumentException("User does not own this todolist");
         }

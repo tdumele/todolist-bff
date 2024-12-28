@@ -13,20 +13,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.SecureRandom;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,11 +36,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers(applicationProperties.getSecurity().getPermittedUrls()).permitAll()
-                            .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                            .anyRequest().authenticated();
-                })
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers(applicationProperties.getSecurity().getPermittedUrls()).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                        .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -1,9 +1,11 @@
 package com.todolist.bff_todolist.api.controller;
 
 import com.todolist.bff_todolist.api.mapper.TaskMapper;
-import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequestApi;
+import com.todolist.bff_todolist.api.vo.todolist.CreateTaskRequest;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
+import com.todolist.bff_todolist.api.vo.todolist.PutTodolistTaskRequest;
+import com.todolist.bff_todolist.api.vo.todolist.PutTodolistTaskResponse;
 import com.todolist.bff_todolist.domain.model.user.User;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +17,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
@@ -85,8 +93,22 @@ public class TodolistController {
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<GetTodolistTaskResponse> createTaskInTodolist(@PathVariable("id") UUID id, @RequestBody CreateTaskRequestApi request) {
+    public ResponseEntity<Void> createTaskInTodolist(@PathVariable("id") UUID id, @RequestBody CreateTaskRequest request) {
         var task = todolistService.createTaskInTodolist(id, mapper.mapTo(request));
         return ResponseEntity.created(URI.create("/api/v1/todolists/" + id + "/tasks/" + task.id())).build();
+    }
+
+    @PutMapping("/{id}/tasks/{taskId}")
+    @Operation(summary = "Update a task in a todolist", description = "Update a task in a specific todolist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task updated",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetTodolistTaskResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<PutTodolistTaskResponse> updateTaskInTodolist(@PathVariable("id") UUID id, @RequestBody PutTodolistTaskRequest request) {
+        var task = todolistService.updateTaskInTodolist(id, mapper.mapTo(request));
+        return ResponseEntity.ok(mapper.mapToUpdatedTask(task));
     }
 }

@@ -18,4 +18,8 @@ public interface TodolistRepository {
     List<Todolist> getAllTodolistsByUserId(UUID id);
 
     Task createTask(Task task);
+
+    Optional<Task> findTaskById(UUID id);
+
+    Task updateTask(Task task);
 }

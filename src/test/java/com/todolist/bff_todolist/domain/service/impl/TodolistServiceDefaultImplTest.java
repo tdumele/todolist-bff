@@ -1,6 +1,5 @@
 package com.todolist.bff_todolist.domain.service.impl;
 
-import com.todolist.bff_todolist.domain.model.CreateTaskRequest;
 import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.Todolist;
 import com.todolist.bff_todolist.domain.model.user.User;
@@ -21,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -119,7 +117,7 @@ class TodolistServiceDefaultImplTest {
     @Test
     void createTaskInTodolistCreatesTaskWhenRequestIsValid() {
         UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("Title", "Description", LocalDateTime.now().plusDays(1));
+        Task request = new Task(null, "Title", "Description", false, LocalDateTime.now().plusDays(1), null);
         UUID userId = UUID.randomUUID();
 
         User user = new User();
@@ -146,7 +144,7 @@ class TodolistServiceDefaultImplTest {
     @Test
     void createTaskInTodolistThrowsExceptionWhenTodolistNotFound() {
         UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("Title", "Description", LocalDateTime.now().plusDays(1));
+        Task request = new Task(null, "Title", "Description", false, LocalDateTime.now().plusDays(1), null);
         when(todolistRepository.getTodolistById(id)).thenReturn(Optional.empty());
 
         assertThrows(IllegalStateException.class, () -> todolistService.createTaskInTodolist(id, request));
@@ -155,7 +153,7 @@ class TodolistServiceDefaultImplTest {
     @Test
     void createTaskInTodolistThrowsExceptionWhenUserIsNotOwner() {
         UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("Title", "Description", LocalDateTime.now().plusDays(1));
+        Task request = new Task(null, "Title", "Description", false, LocalDateTime.now().plusDays(1), null);
         Todolist todolist = new Todolist(id, "Title", "Description", UUID.randomUUID());
         when(todolistRepository.getTodolistById(id)).thenReturn(Optional.of(todolist));
         try (MockedStatic<SecurityContextHolder> mockedStatic = mockStatic(SecurityContextHolder.class)) {
@@ -172,17 +170,7 @@ class TodolistServiceDefaultImplTest {
     @Test
     void createTaskInTodolistThrowsExceptionWhenTitleIsBlank() {
         UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("", "Description", LocalDateTime.now().plusDays(1));
-        Todolist todolist = new Todolist(id, "Title", "Description", UUID.randomUUID());
-        when(todolistRepository.getTodolistById(id)).thenReturn(Optional.of(todolist));
-
-        assertThrows(IllegalArgumentException.class, () -> todolistService.createTaskInTodolist(id, request));
-    }
-
-    @Test
-    void createTaskInTodolistThrowsExceptionWhenDescriptionIsBlank() {
-        UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("Title", "", LocalDateTime.now().plusDays(1));
+        Task request = new Task(null, "", "Description", false, LocalDateTime.now().plusDays(1), null);
         Todolist todolist = new Todolist(id, "Title", "Description", UUID.randomUUID());
         when(todolistRepository.getTodolistById(id)).thenReturn(Optional.of(todolist));
 
@@ -192,10 +180,84 @@ class TodolistServiceDefaultImplTest {
     @Test
     void createTaskInTodolistThrowsExceptionWhenDueDateIsInThePast() {
         UUID id = UUID.randomUUID();
-        CreateTaskRequest request = new CreateTaskRequest("Title", "Description", LocalDateTime.now().minusDays(1));
+        Task request = new Task(null, "Title", "Description", false, LocalDateTime.now().minusDays(1), null);
         Todolist todolist = new Todolist(id, "Title", "Description", UUID.randomUUID());
         when(todolistRepository.getTodolistById(id)).thenReturn(Optional.of(todolist));
 
         assertThrows(IllegalArgumentException.class, () -> todolistService.createTaskInTodolist(id, request));
+    }
+
+    @Test
+    void updateTaskInTodolistUpdatesTaskWhenRequestIsValid() {
+        UUID idTodolist = UUID.randomUUID();
+        UUID taskId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        User user = new User();
+        user.setId(userId);
+        Task request = new Task(taskId, "Updated Title", "Updated Description", false, LocalDateTime.now().plusDays(1), null);
+        Todolist todolist = new Todolist(idTodolist, "Title", "Description", userId);
+        when(todolistRepository.getTodolistById(idTodolist)).thenReturn(Optional.of(todolist));
+        when(todolistRepository.updateTask(request)).thenReturn(request);
+
+        try (MockedStatic<SecurityContextHolder> mockedStatic = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
+            when(SecurityContextHolder.getContext()).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getPrincipal()).thenReturn(user);
+
+            Task updatedTask = todolistService.updateTaskInTodolist(idTodolist, request);
+            assertEquals(request, updatedTask);
+        }
+    }
+
+    @Test
+    void updateTaskInTodolistThrowsExceptionWhenTodolistNotFound() {
+        UUID idTodolist = UUID.randomUUID();
+        UUID taskId = UUID.randomUUID();
+        Task request = new Task(taskId, "Updated Title", "Updated Description", false, LocalDateTime.now().plusDays(1), null);
+        when(todolistRepository.getTodolistById(idTodolist)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalStateException.class, () -> todolistService.updateTaskInTodolist(idTodolist, request));
+    }
+
+    @Test
+    void updateTaskInTodolistThrowsExceptionWhenUserIsNotOwner() {
+        UUID idTodolist = UUID.randomUUID();
+        UUID taskId = UUID.randomUUID();
+        Task request = new Task(taskId, "Updated Title", "Updated Description", false, LocalDateTime.now().plusDays(1), null);
+        Todolist todolist = new Todolist(idTodolist, "Title", "Description", UUID.randomUUID());
+        when(todolistRepository.getTodolistById(idTodolist)).thenReturn(Optional.of(todolist));
+        try (MockedStatic<SecurityContextHolder> mockedStatic = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
+            when(SecurityContextHolder.getContext()).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getPrincipal()).thenReturn(new User());
+
+            assertThrows(IllegalArgumentException.class, () -> todolistService.updateTaskInTodolist(idTodolist, request));
+        }
+    }
+
+    @Test
+    void updateTaskInTodolistThrowsExceptionWhenTitleIsBlank() {
+        UUID idTodolist = UUID.randomUUID();
+        UUID taskId = UUID.randomUUID();
+        Task request = new Task(taskId, "", "Updated Description", false, LocalDateTime.now().plusDays(1), null);
+        Todolist todolist = new Todolist(idTodolist, "Title", "Description", UUID.randomUUID());
+        when(todolistRepository.getTodolistById(idTodolist)).thenReturn(Optional.of(todolist));
+
+        assertThrows(IllegalArgumentException.class, () -> todolistService.updateTaskInTodolist(idTodolist, request));
+    }
+
+    @Test
+    void updateTaskInTodolistThrowsExceptionWhenDueDateIsInThePast() {
+        UUID idTodolist = UUID.randomUUID();
+        UUID taskId = UUID.randomUUID();
+        Task request = new Task(taskId, "Updated Title", "Updated Description", false, LocalDateTime.now().minusDays(1), null);
+        Todolist todolist = new Todolist(idTodolist, "Title", "Description", UUID.randomUUID());
+        when(todolistRepository.getTodolistById(idTodolist)).thenReturn(Optional.of(todolist));
+
+        assertThrows(IllegalArgumentException.class, () -> todolistService.updateTaskInTodolist(idTodolist, request));
     }
 }

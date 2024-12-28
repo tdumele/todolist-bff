@@ -15,10 +15,10 @@ public class TestsConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.anyRequest().permitAll();
-                }).httpBasic(Customizer.withDefaults());
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorize) ->
+                        authorize.anyRequest().permitAll()
+                ).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 }
