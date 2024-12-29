@@ -24,7 +24,7 @@ public class TodolistEntity {
     @Column(name = "TODOLIST_DESCRIPTION")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private UserAccountEntity user;
 

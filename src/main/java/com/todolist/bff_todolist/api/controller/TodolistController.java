@@ -6,6 +6,7 @@ import com.todolist.bff_todolist.api.vo.todolist.GetTodolistResponse;
 import com.todolist.bff_todolist.api.vo.todolist.GetTodolistTaskResponse;
 import com.todolist.bff_todolist.api.vo.todolist.PutTodolistTaskRequest;
 import com.todolist.bff_todolist.api.vo.todolist.PutTodolistTaskResponse;
+import com.todolist.bff_todolist.domain.model.Task;
 import com.todolist.bff_todolist.domain.model.user.User;
 import com.todolist.bff_todolist.domain.service.TodolistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +30,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-
+// TODO : Check HTTP status code
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/todolists")
@@ -98,7 +99,7 @@ public class TodolistController {
         return ResponseEntity.created(URI.create("/api/v1/todolists/" + id + "/tasks/" + task.id())).build();
     }
 
-    @PutMapping("/{id}/tasks/{taskId}")
+    @PutMapping("/{id}/tasks")
     @Operation(summary = "Update a task in a todolist", description = "Update a task in a specific todolist")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task updated",

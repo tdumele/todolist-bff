@@ -44,7 +44,7 @@ public class TodolistServiceDefaultImpl implements TodolistService {
     @Override
     public Task createTaskInTodolist(UUID idTodolist, Task request) {
         Todolist todolist = todolistRepository.getTodolistById(idTodolist).orElseThrow(() -> new IllegalStateException("Todolist not found"));
-        checkTaskRequest(todolist, request);
+        checkPostTaskRequest(todolist, request);
         Task task = new Task(UUID.randomUUID(), request.title(), request.description(), false, request.dueDate(), todolist);
 
         return todolistRepository.createTask(task);
@@ -53,32 +53,39 @@ public class TodolistServiceDefaultImpl implements TodolistService {
     @Override
     public Task updateTaskInTodolist(UUID idTodolist, Task task) {
         Todolist todolist = todolistRepository.getTodolistById(idTodolist).orElseThrow(() -> new IllegalStateException("Todolist not found"));
-        checkTaskRequest(todolist, task);
-        return todolistRepository.updateTask(task);
+        checkPutTaskRequest(todolist, task);
+        // TODO revise the MCD
+        var preparedTask = new Task(task.id(), task.title(), task.description(), task.checked(), task.dueDate(), todolist);
+        return todolistRepository.updateTask(preparedTask);
     }
 
-    private void checkPutRequest(Todolist todolist, Task request) {
-        checkTaskRequest(todolist, request);
+    private void checkPutTaskRequest(Todolist todolist, Task request) {
         if (request.id() == null) {
             throw new IllegalArgumentException("Task id is required");
+        }
+        if (StringUtils.isBlank(request.title())) {
+            throw new IllegalArgumentException("Title is required");
+        }
+        if (loggerUserDoesntOwnThis(todolist)) {
+            throw new IllegalArgumentException("User does not own this todolist");
         }
         todolistRepository.findTaskById(request.id()).orElseThrow(() -> new IllegalStateException("Task not found"));
     }
 
-    private void checkTaskRequest(Todolist todolist, Task request) {
+    private void checkPostTaskRequest(Todolist todolist, Task request) {
         if (StringUtils.isBlank(request.title())) {
             throw new IllegalArgumentException("Title is required");
         }
         if (request.dueDate() != null && request.dueDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Due date must be in the future");
         }
-        if (!loggerUserOwnThis(todolist)) {
+        if (loggerUserDoesntOwnThis(todolist)) {
             throw new IllegalArgumentException("User does not own this todolist");
         }
     }
 
-    private static boolean loggerUserOwnThis(Todolist todolist) {
+    private static boolean loggerUserDoesntOwnThis(Todolist todolist) {
         User userAuthenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return todolist.userId().equals(userAuthenticated.getId());
+        return !todolist.user().getId().equals(userAuthenticated.getId());
     }
 }

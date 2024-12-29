@@ -52,6 +52,7 @@ public class SecurityConfiguration {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedOrigins(applicationProperties.getSecurity().getAllowedOrigins());
             }
         };
